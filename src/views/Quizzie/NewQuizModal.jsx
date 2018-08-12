@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
@@ -14,7 +13,7 @@ import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.jsx";
 import modalStyle from "../../assets/jss/material-kit-react/modalStyle";
 import NewQuizModalForm from "./NewQuizModalForm";
-import * as quizzesService from "../../services/quizzes.service"
+import * as quizzesServices from "../../services/quizzes.service"
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
@@ -76,10 +75,13 @@ class NewQuizModal extends React.Component {
   };
 
   handleSave = () => {
-    quizzesService.create(this.state)
+    quizzesServices.create(this.state)
       .then(data => {
         this.handleClose("modal")
       })
+     .then(()=>{
+        this.props.getAllQuizzes()
+     })
       .catch(error => console.log(error));
   }
 

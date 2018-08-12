@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
+import modalStyle from "../../assets/jss/material-kit-react/modalStyle";
 import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -12,7 +13,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 // core components
 import Button from "components/CustomButtons/Button.jsx";
-import modalStyle from "../../assets/jss/material-kit-react/modalStyle";
 import NewQuizModalForm from "./NewQuizModalForm";
 import * as quizzesService from "../../services/quizzes.service"
 

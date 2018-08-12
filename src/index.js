@@ -14,6 +14,7 @@ ReactDOM.render(
     <React.Fragment>
       <Switch>
         <Route exact path="/quizzie" component={Main} />
+        <Route exact path="/quizzie/:id" component={Main} />
         {indexRoutes.map((prop, key) => {
           return <Route path={prop.path} key={key} component={prop.component} />;
         })}

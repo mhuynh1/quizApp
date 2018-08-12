@@ -17,7 +17,6 @@ import NewCategoryModal from './NewCategoryModal'
 import QuizCard from './QuizCard'
 import Clearfix from '../../components/Clearfix/Clearfix'
 import * as quizzesServices from '../../services/quizzes.service'
-import Button from "components/CustomButtons/Button.jsx";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -38,6 +37,7 @@ const styles = theme => ({
             width: `calc(100% - ${drawerWidth}px)`,
         },
     },
+
     navIconHide: {
         [theme.breakpoints.up('md')]: {
             display: 'none',
@@ -70,7 +70,14 @@ class ResponsiveDrawer extends React.Component {
             })
     }
 
-
+    getAllQuizzes = () => {
+        quizzesServices.readAll()
+            .then(data => {
+                setTimeout(() => {
+                    this.setState({ quizzes: data })
+                }, 700)
+            })
+    }
     handleDrawerToggle = () => {
         this.setState(state => ({ mobileOpen: !state.mobileOpen }));
     };
@@ -102,8 +109,7 @@ class ResponsiveDrawer extends React.Component {
         const drawer = (
             <div>
                 <div className={classes.toolbar} />
-                
-                <NewQuizModal />
+                <NewQuizModal getAllQuizzes={this.getAllQuizzes} />
                 <Divider />
                 <List component="nav">
                     <ListItem button>
@@ -165,7 +171,6 @@ class ResponsiveDrawer extends React.Component {
                     <div className={classes.toolbar} />
                     <section style={{ 'display': 'flex', 'flexFlow': 'row wrap', 'justifyContent': 'space-between' }}>
                         {quizzes}
-                        {this.state.toggleEdit && <NewQuizModal quizId={this.state.quizId} />}
                     </section>
                 </main>
                 <Clearfix />
