@@ -44,6 +44,17 @@ export function _delete(id) {
         .catch(responseErrorHandler);
 }
 
+export function update(id, data) {
+    const config = {
+        method: "PUT",
+        data: data
+    };
+
+    return axios(`${baseUrl}/${id}`, config)
+        .then(responseSuccessHandler)
+        .catch(responseErrorHandler);
+}
+
 const responseSuccessHandler = response => {
     return response.data
 };

@@ -14,7 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import NewQuizModal from './NewQuizModal'
 import NewCategoryModal from './NewCategoryModal'
-import QuizCard from './QuizCard'
+import Mainwell from './Mainwell'
 import Clearfix from '../../components/Clearfix/Clearfix'
 import * as quizzesServices from '../../services/quizzes.service'
 const drawerWidth = 240;
@@ -57,21 +57,14 @@ const styles = theme => ({
     },
 });
 
-class ResponsiveDrawer extends React.Component {
-    state = {
-        quizzes: []
-    }
+class Layout extends React.Component {
+    state = {}
 
-    componentDidMount() {
-        quizzesServices.readAll()
-            .then(data => {
-                console.log(data)
-                this.setState({ quizzes: data })
-            })
-    }
+    handleDrawerToggle = () => {
+        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+    };
 
     getAllQuizzes = () => {
-        debugger
         quizzesServices.readAll()
             .then(data => {
                 setTimeout(() => {
@@ -79,34 +72,9 @@ class ResponsiveDrawer extends React.Component {
                 }, 700)
             })
     }
-    handleDrawerToggle = () => {
-        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-    };
-
-    handleDelete = e => {
-        console.log(typeof e.target.id)
-        quizzesServices._delete(e.target.id)
-            .then(() => {
-                return quizzesServices.readAll()
-            })
-            .then(data => {
-                this.setState({ quizzes: data })
-            })
-    }
-
-    handleEdit = e => {
-        console.log(typeof e.target.id, e.target.id, 'update')
-        this.setState({
-            toggleEdit: true,
-            quizId: e.target.id
-        })
-    }
 
     render() {
         const { classes, theme } = this.props;
-        const quizzes = this.state.quizzes && this.state.quizzes.map(quiz => {
-            return (<QuizCard id={quiz._id} handleDelete={this.handleDelete} handleEdit={this.handleEdit} key={quiz._id} cardTitle={quiz.question} choiceA={quiz.answer1} choiceB={quiz.answer2} choiceC={quiz.answer3} choiceD={quiz.answer4} />)
-        })
         const drawer = (
             <div>
                 <div className={classes.toolbar} />
@@ -168,21 +136,16 @@ class ResponsiveDrawer extends React.Component {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <main className={classes.content}>
-                    <div className={classes.toolbar} />
-                    <section style={{ 'display': 'flex', 'flexFlow': 'row wrap', 'justifyContent': 'space-between' }}>
-                        {quizzes}
-                    </section>
-                </main>
+                    <Mainwell quizzes={this.state.quizzes}/>
                 <Clearfix />
             </div>
         );
     }
 }
 
-ResponsiveDrawer.propTypes = {
+Layout.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+export default withStyles(styles, { withTheme: true })(Layout);

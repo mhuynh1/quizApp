@@ -42,10 +42,15 @@ class NewQuizModalForm extends React.Component {
     state = {
         multiline: 'Controlled',
         currency: 'EUR',
+        formData: {}
     };
 
-    
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.formData !== this.props.formData) {
+            this.setState({ formData: nextProps.formData })
+        }
+    }
+      
     render() {
         const { classes } = this.props;
 
@@ -64,15 +69,21 @@ class NewQuizModalForm extends React.Component {
                     label="Question"
                     placeholder="Placeholder"
                     fullWidth
+                    value={this.state.formData.question}
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('question')}
-                />
+                >
+                    {/* sjfoaijsfoiakwnefjioafe
+                    {this.state.formData.question ? this.state.formData.question : ''} 
+                */}
+                </TextField>
                 <TextField
                     id="answer1"
                     label="Answer 1"
                     placeholder="Answer"
                     fullWidth
+                    value={this.state.formData.answer1}
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer1')}
@@ -82,6 +93,7 @@ class NewQuizModalForm extends React.Component {
                     label="Answer 2"
                     placeholder="Answer"
                     fullWidth
+                    value={this.state.formData.answer2}
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer2')}
@@ -91,6 +103,7 @@ class NewQuizModalForm extends React.Component {
                     label="Answer 3"
                     placeholder="Answer"
                     fullWidth
+                    value={this.state.formData.answer3}
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer3')}
@@ -100,6 +113,7 @@ class NewQuizModalForm extends React.Component {
                     label="Answer 4"
                     placeholder="Answer"
                     fullWidth
+                    value={this.state.formData.answer4}
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer4')}

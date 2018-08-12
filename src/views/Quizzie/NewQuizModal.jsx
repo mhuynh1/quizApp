@@ -80,6 +80,7 @@ class NewQuizModal extends React.Component {
         this.handleClose("modal")
       })
      .then(()=>{
+       debugger
         this.props.getAllQuizzes()
      })
       .catch(error => console.log(error));

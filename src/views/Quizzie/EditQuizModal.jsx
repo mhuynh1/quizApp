@@ -12,10 +12,9 @@ import Close from "@material-ui/icons/Close";
 // core components
 import Button from "components/CustomButtons/Button.jsx";
 import modalStyle from "../../assets/jss/material-kit-react/modalStyle";
-import TextField from '@material-ui/core/TextField';
 import NewQuizModalForm from "./NewQuizModalForm";
 import Icon from '@material-ui/core/Icon';
-
+import * as quizzesServices from '../../services/quizzes.service'
 
 function Transition(props) {
     return <Slide direction="down" {...props} />;
@@ -36,42 +35,84 @@ const styles = theme => ({
 });
 
 const editIcon = {
-  position: "absolute",
-  right: "40px",
-  top: "40px",
-  zIndex: 1,
-  color: "#9E9E9E",
-  fontSize: "18px",
-  cursor: "pointer"
+    position: "absolute",
+    right: "40px",
+    top: "40px",
+    zIndex: 1,
+    color: "#9E9E9E",
+    fontSize: "18px",
+    cursor: "pointer"
 }
 
 class EditQuizModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            formData: {}
         };
     }
-    handleClickOpen(modal) {
+    componentDidMount() {
+        console.log('editmodal')
+    }
+    handleClickOpen = (modal,e) => {
+        let id = e.target.id
         var x = [];
         x[modal] = true;
-        this.setState(x);
+        this.setState(x, () => {
+            debugger
+            quizzesServices.readById(id)
+                .then(data => {
+                    this.setState({
+                        formData: {
+                            question: data.question,
+                            answer1: data.answer1,
+                            answer2: data.answer2,
+                            answer3: data.answer3,
+                            answer4: data.answer4,
+                            category: data.currency,
+                            editId: data._id
+                        }
+                    })
+                })
+        })
+
     }
     handleClose(modal) {
         var x = [];
         x[modal] = false;
         this.setState(x);
     }
+
     handleChange = name => event => {
-        this.setState({
-          [name]: event.target.value,
-        });
-      };
+        let value = event.target.value
+        this.setState(prev => ({
+            formData: { ...prev.formData, [name]: value }
+        }))
+    };
+
+    handleSave = () => {
+        const data = {...this.state.formData}
+        delete data.editId
+        quizzesServices.update(this.state.formData.editId, data)
+            .then(data => {
+                this.handleClose("modal")
+            })
+            .then(() => {
+                this.props.getAllQuizzes()
+            })
+            .then(data => {
+                setTimeout(() => {
+                    this.setState({ quizzes: data })
+                }, 700)
+            })
+            .catch(error => console.log(error));
+    }
     render() {
         const { classes } = this.props;
         return (
             <div>
-        <i id={this.props.id} className="material-icons" style={editIcon} onClick={() => this.handleClickOpen("modal")}>edit</i>
+                <i id={this.props.id} className="material-icons" style={editIcon} onClick={(e) => this.handleClickOpen("modal", e)}>edit</i>
                 <Dialog
                     classes={{
                         root: classes.center,
@@ -95,20 +136,19 @@ class EditQuizModal extends React.Component {
                             onClick={() => this.handleClose("modal")}>
                             <Close className={classes.modalClose} />
                         </IconButton>
-                        <h4 className={classes.modalTitle}>Add New Category</h4>
+                        <h4 className={classes.modalTitle}>Edit Quiz Details</h4>
                     </DialogTitle>
                     <DialogContent
                         id="modal-slide-description"
                         className={classes.modalBody}>
-                        <NewQuizModalForm handleChange={this.handleChange} />
+                        <NewQuizModalForm editId={this.state.editId} formData={this.state.formData} handleChange={this.handleChange} />
                     </DialogContent>
                     <DialogActions
                         className={classes.modalFooter + " " + classes.modalFooterCenter}>
                         <Button
-                            onClick={() => this.handleClose("modal")}
+                            onClick={() => this.handleSave()}
                             color="successNoBackground">
-                            <Icon color="disabled">add_circle</Icon>
-                            &nbsp;Add Category
+                            Yes
             </Button>
                     </DialogActions>
                 </Dialog>

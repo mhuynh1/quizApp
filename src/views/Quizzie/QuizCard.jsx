@@ -8,7 +8,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import { cardTitle } from "assets/jss/material-kit-react.jsx";
 import EditQuizModal from "./EditQuizModal"
-import * as quizzesService from "../../services/quizzes.service"
+
 const style = {
   cardTitle,
   textCenter: {
@@ -64,16 +64,6 @@ const deleteIcon = {
   cursor: "pointer"
 }
 
-// const editIcon = {
-//   position: "absolute",
-//   right: "40px",
-//   top: "40px",
-//   zIndex: 1,
-//   color: "#9E9E9E",
-//   fontSize: "18px",
-//   cursor: "pointer"
-// }
-
 class QuizCard extends React.Component {
   static propTypes = {
     cardTitle: PropTypes.string,
@@ -90,8 +80,7 @@ class QuizCard extends React.Component {
     const { classes, iconStyles } = this.props;
     return (
       <div style={{ "position": "relative" }}>
-        {/* <i id={this.props.id} className="material-icons" style={editIcon} onClick={e => this.props.handleEdit(e)}>edit</i> */}
-        <EditQuizModal/>
+        <EditQuizModal id={this.props.id} getAllQuizzes={this.props.getAllQuizzes} />
         <i id={this.props.id} className="material-icons" style={deleteIcon} onClick={e => this.props.handleDelete(e)}>delete_outline</i>
         <Card className={classes.textCenter} style={{ width: "20rem" }}>
           <CardBody>
