@@ -38,10 +38,9 @@ const categories = [
     },
 ];
 
-class NewQuizModalForm extends React.Component {
+class QuizModalForm extends React.Component {
     state = {
         multiline: 'Controlled',
-        currency: 'EUR',
         formData: {}
     };
 
@@ -56,14 +55,6 @@ class NewQuizModalForm extends React.Component {
 
         return (
             <form className={classes.container} noValidate autoComplete="off">
-                {/* <TextField
-                    id="title"
-                    label="Title"
-                    className={classes.textField}
-                    value={this.state.title}
-                    margin="normal"
-                    onChange={this.props.handleChange('title')}
-                /> */}
                 <TextField
                     id="question"
                     label="Question"
@@ -73,6 +64,10 @@ class NewQuizModalForm extends React.Component {
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('question')}
+                    InputLabelProps={this.state.formData.question && { 
+                        shrink: true
+                      }} 
+
                 >
                 </TextField>
                 <TextField
@@ -84,6 +79,9 @@ class NewQuizModalForm extends React.Component {
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer1')}
+                    InputLabelProps={this.state.formData.answer1 && { 
+                        shrink: true
+                      }} 
                 />
                 <TextField
                     id="answer2"
@@ -94,6 +92,9 @@ class NewQuizModalForm extends React.Component {
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer2')}
+                    InputLabelProps={this.state.formData.answer2 && { 
+                        shrink: true
+                      }} 
                 />
                 <TextField
                     id="answer3"
@@ -104,6 +105,9 @@ class NewQuizModalForm extends React.Component {
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer3')}
+                    InputLabelProps={this.state.formData.answer3 && { 
+                        shrink: true
+                      }} 
                 />
                 <TextField
                     id="answer4"
@@ -114,20 +118,24 @@ class NewQuizModalForm extends React.Component {
                     multiline
                     margin="normal"
                     onChange={this.props.handleChange('answer4')}
+                    InputLabelProps={this.state.formData.answer4 && { 
+                        shrink: true
+                      }} 
                 />
                 <TextField
-                    id="select-currency"
+                    id="select-category"
                     select
                     label="Select"
                     className={classes.textField}
                     value={this.state.currency}
-                    onChange={this.props.handleChange('currency')}
+                    onChange={this.props.handleChange('category')}
                     SelectProps={{
+                        value: this.state.category,
                         MenuProps: {
-                            className: classes.menu,
+                            className: classes.menu
                         },
                     }}
-                    helperText="Please select your currency"
+                    helperText="Please select your category"
                     margin="normal"
                 >
                     {categories.map(option => (
@@ -142,8 +150,8 @@ class NewQuizModalForm extends React.Component {
     }
 }
 
-NewQuizModalForm.propTypes = {
+QuizModalForm.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NewQuizModalForm);
+export default withStyles(styles)(QuizModalForm);

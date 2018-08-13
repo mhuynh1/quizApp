@@ -1,6 +1,7 @@
-import React from 'react'
-import { Route,withRouter } from 'react-router-dom'
-import Mainwell from './Mainwell'
+import React from 'react';
+import { Route,withRouter } from 'react-router-dom';
+import Mainwell from './Mainwell';
+import EditQuizModal from './EditQuizModal';
 class PageContent extends React.Component {
     state = {}
     componentWillReceiveProps(nextProps){
@@ -13,7 +14,8 @@ class PageContent extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path="/quizzie" render={(props) => (<Mainwell {...props} quizzes={this.state.quizzes}/>)}/>
+                <Route exact path="/" render={(props) => (<Mainwell {...props} quizzes={this.state.quizzes}/>)}/>
+                <Route exact path="/edit/:id" component={EditQuizModal} />
             </React.Fragment>
         )
     }

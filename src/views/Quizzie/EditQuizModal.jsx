@@ -1,5 +1,6 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+// import { Link } from 'react-router';
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
@@ -13,8 +14,7 @@ import Close from "@material-ui/icons/Close";
 // core components
 import Button from "components/CustomButtons/Button.jsx";
 import modalStyle from "../../assets/jss/material-kit-react/modalStyle";
-import NewQuizModalForm from "./NewQuizModalForm";
-import Icon from '@material-ui/core/Icon';
+import QuizModalForm from "./QuizModalForm";
 import * as quizzesServices from '../../services/quizzes.service'
 
 function Transition(props) {
@@ -64,6 +64,7 @@ class EditQuizModal extends React.Component {
                 })
         }
     }
+
     handleClickOpen = (modal, e) => {
         let id = e.target.id
         var x = [];
@@ -76,12 +77,14 @@ class EditQuizModal extends React.Component {
                     })
                 })
         })
-
     }
+
     handleClose(modal) {
         var x = [];
         x[modal] = false;
-        this.setState(x);
+        this.setState(x ,() =>{
+            this.props.history.goBack()
+        });
     }
 
     handleChange = name => event => {
@@ -95,24 +98,18 @@ class EditQuizModal extends React.Component {
         const data = { ...this.state.formData }
         delete data._id
         quizzesServices.update(this.state.formData._id, data)
-            .then(data => {
-                this.handleClose("modal")
-            })
             .then(() => {
-                this.props.getAllQuizzes()
-            })
-            .then(data => {
-                setTimeout(() => {
-                    this.setState({ quizzes: data })
-                }, 700)
+                this.handleClose("modal")
             })
             .catch(error => console.log(error));
     }
     render() {
         const { classes } = this.props;
         return (
-            <div style={{"display": "inline"}}>
-                <i id={this.props.id} className="material-icons" style={{"fontSize": "18px", "marginRight": "10px"}} onClick={(e) => this.handleClickOpen("modal", e)}>edit</i>
+            <div style={{ "display": "inline" }}>
+                <Link to={`/edit/${this.props.id}`} onClick={(e) => this.handleClickOpen("modal", e)}>
+                    <i id={this.props.id} className="material-icons" style={{ "fontSize": "18px", "marginRight": "10px" }}>edit</i>
+                </Link>
                 <Dialog
                     classes={{
                         root: classes.center,
@@ -141,7 +138,7 @@ class EditQuizModal extends React.Component {
                     <DialogContent
                         id="modal-slide-description"
                         className={classes.modalBody}>
-                        <NewQuizModalForm editId={this.state.editId} formData={this.state.formData} handleChange={this.handleChange} />
+                        <QuizModalForm editId={this.state.editId} formData={this.state.formData} handleChange={this.handleChange} />
                     </DialogContent>
                     <DialogActions
                         className={classes.modalFooter + " " + classes.modalFooterCenter}>
@@ -149,7 +146,7 @@ class EditQuizModal extends React.Component {
                             onClick={() => this.handleSave()}
                             color="successNoBackground">
                             Save
-            </Button>
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </div>

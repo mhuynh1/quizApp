@@ -2,22 +2,9 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Hidden from '@material-ui/core/Hidden';
-import Divider from '@material-ui/core/Divider';
-import MenuIcon from '@material-ui/icons/Menu';
-import NewQuizModal from './NewQuizModal'
-import NewCategoryModal from './NewCategoryModal'
-import QuizCard from './QuizCard'
-import Clearfix from '../../components/Clearfix/Clearfix'
-import * as quizzesServices from '../../services/quizzes.service'
+import {Route} from 'react-router';
+import QuizCard from './QuizCard';
+import * as quizzesServices from '../../services/quizzes.service';
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -67,7 +54,6 @@ class Mainwell extends React.Component {
     }
 
     handleDelete = e => {
-        console.log(typeof e.target.id)
         quizzesServices._delete(e.target.id)
             .then(() => {
                 return quizzesServices.readAll()
@@ -92,10 +78,11 @@ class Mainwell extends React.Component {
             <React.Fragment>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <section style={{ 'display': 'flex', 'flexFlow': 'row wrap', 'justifyContent': 'space-between' }}>
+        <section style={{ 'display': 'flex', 'flexFlow': 'row wrap'}}>
                         {quizzes}
                     </section>
                 </main>
+                
             </React.Fragment>
         )
     }

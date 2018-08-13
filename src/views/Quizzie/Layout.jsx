@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,7 +15,6 @@ import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import NewQuizModal from './NewQuizModal';
 import NewCategoryModal from './NewCategoryModal';
-import Mainwell from './Mainwell';
 import Clearfix from '../../components/Clearfix/Clearfix';
 import * as quizzesServices from '../../services/quizzes.service';
 import PageContent from './PageContent';
@@ -149,7 +147,6 @@ class Layout extends React.Component {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                {/* <Mainwell quizzes={this.state.quizzes} /> */}
                 <PageContent quizzes={this.state.quizzes} />
                 <Clearfix />
             </div>

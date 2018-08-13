@@ -13,7 +13,7 @@ import Close from "@material-ui/icons/Close";
 // core components
 import Button from "components/CustomButtons/Button.jsx";
 import modalStyle from "../../assets/jss/material-kit-react/modalStyle";
-import NewQuizModalForm from "./NewQuizModalForm";
+import QuizModalForm from "./QuizModalForm";
 import * as quizzesServices from "../../services/quizzes.service"
 
 function Transition(props) {
@@ -113,7 +113,7 @@ class NewQuizModal extends React.Component {
           <DialogContent
             id="modal-slide-description"
             className={classes.modalBody}>
-            <NewQuizModalForm handleChange={this.handleChange} />
+            <QuizModalForm handleChange={this.handleChange} />
           </DialogContent>
           <DialogActions
             className={classes.modalFooter + " " + classes.modalFooterCenter}>
