@@ -74,9 +74,6 @@ class NewQuizModalForm extends React.Component {
                     margin="normal"
                     onChange={this.props.handleChange('question')}
                 >
-                    {/* sjfoaijsfoiakwnefjioafe
-                    {this.state.formData.question ? this.state.formData.question : ''} 
-                */}
                 </TextField>
                 <TextField
                     id="answer1"

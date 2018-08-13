@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router";
 import indexRoutes from "routes/index.jsx";
-import Main from './views/Quizzie/Main'
 import Layout from './views/Quizzie/Layout'
+import EditQuizModal from './views/Quizzie/EditQuizModal';
 
 import "assets/scss/material-kit-react.css?v=1.1.0";
 
@@ -13,13 +13,15 @@ var hist = createBrowserHistory();
 ReactDOM.render(
   <Router history={hist}>
     <React.Fragment>
+      <Route exact path="/quizzie" render={props => (<Layout {...props}/>)} />
       <Switch>
-        <Route exact path="/" component={Layout} />
-        {/* <Route exact path="/quizzie/:id" component={Main} /> */}
+        <Route exact path="/quizzie/edit/:id" component={EditQuizModal} />
+      </Switch>
+      {/* <Switch>
         {indexRoutes.map((prop, key) => {
           return <Route path={prop.path} key={key} component={prop.component} />;
         })}
-      </Switch>
+      </Switch> */}
     </React.Fragment>
   </Router>,
   document.getElementById("root")

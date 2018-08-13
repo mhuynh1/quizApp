@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -54,9 +55,9 @@ const style = {
 //   }
 // })
 
-const deleteIcon = {
+const cardIcon = {
   position: "absolute",
-  right: "10px",
+  right: "27px",
   top: "40px",
   zIndex: 1,
   color: "#9E9E9E",
@@ -79,15 +80,17 @@ class QuizCard extends React.Component {
   render() {
     const { classes, iconStyles } = this.props;
     return (
-      <div style={{ "position": "relative" }}>
-        <EditQuizModal id={this.props.id} getAllQuizzes={this.props.getAllQuizzes} />
-        <i id={this.props.id} className="material-icons" style={deleteIcon} onClick={e => this.props.handleDelete(e)}>delete_outline</i>
+      <div style={{ "position": "relative", "padding": "0 20px" }}>
+        <div style={cardIcon}>
+          <EditQuizModal id={this.props.id} getAllQuizzes={this.props.getAllQuizzes} />
+          <i id={this.props.id} className="material-icons" style={{"fontSize": "18px", "marginRight": "10px"}} onClick={e => this.props.handleDelete(e)}>delete_outline</i>
+        </div>
         <Card className={classes.textCenter} style={{ width: "20rem" }}>
           <CardBody>
             <h4 className={classes.cardTitle} style={{ 'marginTop': '1.625rem' }}>{this.props.cardTitle}</h4>
-            <Button color="primary" fullWidth>{this.props.choiceA}</Button>
-            <Button color="primary" fullWidth>{this.props.choiceB}</Button>
-            <Button color="primary" fullWidth>{this.props.choiceC}</Button>
+            <Button color="warning" fullWidth>{this.props.choiceA}</Button>
+            <Button color="info" fullWidth>{this.props.choiceB}</Button>
+            <Button color="rose" fullWidth>{this.props.choiceC}</Button>
             <Button color="primary" fullWidth>{this.props.choiceD}</Button>
           </CardBody>
         </Card>
@@ -96,4 +99,4 @@ class QuizCard extends React.Component {
   }
 };
 
-export default withStyles(style)(QuizCard);
+export default withRouter(withStyles(style)(QuizCard));

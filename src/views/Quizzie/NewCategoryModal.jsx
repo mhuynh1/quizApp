@@ -56,7 +56,7 @@ class NewCategoryModal extends React.Component {
         return (
             <div>
                 <Button
-                    color="rose"
+                    color="default"
                     variant="outlined"
                     round
                     onClick={() => this.handleClickOpen("modal")}>

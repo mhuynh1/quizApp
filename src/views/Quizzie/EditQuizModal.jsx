@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
@@ -53,26 +54,25 @@ class EditQuizModal extends React.Component {
         };
     }
     componentDidMount() {
-        console.log('editmodal')
+        if (this.props.match.params.id) {
+            quizzesServices.readById(this.props.match.params.id)
+                .then(data => {
+                    this.setState({
+                        modal: true,
+                        formData: data
+                    })
+                })
+        }
     }
-    handleClickOpen = (modal,e) => {
+    handleClickOpen = (modal, e) => {
         let id = e.target.id
         var x = [];
         x[modal] = true;
         this.setState(x, () => {
-            debugger
             quizzesServices.readById(id)
                 .then(data => {
                     this.setState({
-                        formData: {
-                            question: data.question,
-                            answer1: data.answer1,
-                            answer2: data.answer2,
-                            answer3: data.answer3,
-                            answer4: data.answer4,
-                            category: data.currency,
-                            editId: data._id
-                        }
+                        formData: data
                     })
                 })
         })
@@ -92,9 +92,9 @@ class EditQuizModal extends React.Component {
     };
 
     handleSave = () => {
-        const data = {...this.state.formData}
-        delete data.editId
-        quizzesServices.update(this.state.formData.editId, data)
+        const data = { ...this.state.formData }
+        delete data._id
+        quizzesServices.update(this.state.formData._id, data)
             .then(data => {
                 this.handleClose("modal")
             })
@@ -111,8 +111,8 @@ class EditQuizModal extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
-                <i id={this.props.id} className="material-icons" style={editIcon} onClick={(e) => this.handleClickOpen("modal", e)}>edit</i>
+            <div style={{"display": "inline"}}>
+                <i id={this.props.id} className="material-icons" style={{"fontSize": "18px", "marginRight": "10px"}} onClick={(e) => this.handleClickOpen("modal", e)}>edit</i>
                 <Dialog
                     classes={{
                         root: classes.center,
@@ -148,7 +148,7 @@ class EditQuizModal extends React.Component {
                         <Button
                             onClick={() => this.handleSave()}
                             color="successNoBackground">
-                            Yes
+                            Save
             </Button>
                     </DialogActions>
                 </Dialog>
@@ -157,4 +157,4 @@ class EditQuizModal extends React.Component {
     }
 }
 
-export default withStyles(modalStyle)(EditQuizModal);
+export default withRouter(withStyles(modalStyle)(EditQuizModal));

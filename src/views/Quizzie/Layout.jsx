@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router';
+import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -12,11 +14,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-import NewQuizModal from './NewQuizModal'
-import NewCategoryModal from './NewCategoryModal'
-import Mainwell from './Mainwell'
-import Clearfix from '../../components/Clearfix/Clearfix'
-import * as quizzesServices from '../../services/quizzes.service'
+import NewQuizModal from './NewQuizModal';
+import NewCategoryModal from './NewCategoryModal';
+import Mainwell from './Mainwell';
+import Clearfix from '../../components/Clearfix/Clearfix';
+import * as quizzesServices from '../../services/quizzes.service';
+import PageContent from './PageContent';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -35,7 +38,7 @@ const styles = theme => ({
         marginLeft: drawerWidth,
         [theme.breakpoints.up('md')]: {
             width: `calc(100% - ${drawerWidth}px)`,
-        },
+        }
     },
 
     navIconHide: {
@@ -58,10 +61,14 @@ const styles = theme => ({
 });
 
 class Layout extends React.Component {
-    state = {}
+    state = {
+        mobileOpen: null,
+        quizzes: []
+    }
 
     handleDrawerToggle = () => {
-        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+
+        this.setState(state => ({ ...state, mobileOpen: !state.mobileOpen }));
     };
 
     getAllQuizzes = () => {
@@ -78,7 +85,11 @@ class Layout extends React.Component {
         const drawer = (
             <div>
                 <div className={classes.toolbar} />
-                <NewQuizModal getAllQuizzes={this.getAllQuizzes} />
+                <List component="nav">
+                    <ListItem button>
+                        <NewQuizModal getAllQuizzes={this.getAllQuizzes} />
+                    </ListItem>
+                </List>
                 <Divider />
                 <List component="nav">
                     <ListItem button>
@@ -87,14 +98,16 @@ class Layout extends React.Component {
                     <ListItem button>
                         <ListItemText primary="Item 2" />
                     </ListItem>
-                    <NewCategoryModal />
+                    <ListItem button>
+                        <NewCategoryModal />
+                    </ListItem>
                 </List>
             </div>
         );
 
         return (
             <div className={classes.root}>
-                <AppBar className={classes.appBar}>
+                <AppBar className={classes.appBar} color="default">
                     <Toolbar>
                         <IconButton
                             color="inherit"
@@ -105,7 +118,7 @@ class Layout extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit" noWrap>
-                            Responsive drawer
+                            Pick A Quizzie
             </Typography>
                     </Toolbar>
                 </AppBar>
@@ -136,7 +149,8 @@ class Layout extends React.Component {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                    <Mainwell quizzes={this.state.quizzes}/>
+                {/* <Mainwell quizzes={this.state.quizzes} /> */}
+                <PageContent quizzes={this.state.quizzes} />
                 <Clearfix />
             </div>
         );
@@ -144,8 +158,8 @@ class Layout extends React.Component {
 }
 
 Layout.propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired
+    classes: PropTypes.object,
+    theme: PropTypes.object
 };
 
-export default withStyles(styles, { withTheme: true })(Layout);
+export default withRouter(withStyles(styles, { withTheme: true })(Layout));

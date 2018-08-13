@@ -71,7 +71,6 @@ class ResponsiveDrawer extends React.Component {
     }
 
     getAllQuizzes = () => {
-        debugger
         quizzesServices.readAll()
             .then(data => {
                 setTimeout(() => {

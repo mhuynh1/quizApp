@@ -1,5 +1,6 @@
 import React from 'react';
 // material-ui components
+import {withRouter} from 'react-router-dom'
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
@@ -43,18 +44,6 @@ class NewQuizModal extends React.Component {
     // quizId: PropTypes.string,
 
   }
-  componentDidMount() {
-    //check if url has id to toggle edit mode
-    // if(this.props.match.params.id){
-    //     quizzesServices.readById(this.props.match.params.id)
-    //     .then(data =>{
-    //         this.setState({
-
-    //         })
-    //     })
-    // }
-
-  }
 
   handleClickOpen(modal) {
     var x = [];
@@ -80,7 +69,6 @@ class NewQuizModal extends React.Component {
         this.handleClose("modal")
       })
      .then(()=>{
-       debugger
         this.props.getAllQuizzes()
      })
       .catch(error => console.log(error));
@@ -91,7 +79,7 @@ class NewQuizModal extends React.Component {
     return (
       <div>
         <Button
-          color="rose"
+          color="info"
           round
           onClick={() => this.handleClickOpen("modal")}>
           New Quiz
@@ -146,4 +134,4 @@ class NewQuizModal extends React.Component {
   }
 }
 
-export default withStyles(modalStyle)(NewQuizModal);
+export default withRouter(withStyles(modalStyle)(NewQuizModal));
