@@ -60,8 +60,7 @@ const styles = theme => ({
 
 class Layout extends React.Component {
     state = {
-        mobileOpen: null,
-        quizzes: []
+        mobileOpen: null
     }
 
     handleDrawerToggle = () => {
@@ -69,14 +68,7 @@ class Layout extends React.Component {
         this.setState(state => ({ ...state, mobileOpen: !state.mobileOpen }));
     };
 
-    getAllQuizzes = () => {
-        quizzesServices.readAll()
-            .then(data => {
-                setTimeout(() => {
-                    this.setState({ quizzes: data })
-                }, 700)
-            })
-    }
+    
 
     render() {
         const { classes, theme } = this.props;
@@ -85,7 +77,7 @@ class Layout extends React.Component {
                 <div className={classes.toolbar} />
                 <List component="nav">
                     <ListItem button>
-                        <NewQuizModal getAllQuizzes={this.getAllQuizzes} />
+                        <NewQuizModal/>
                     </ListItem>
                 </List>
                 <Divider />

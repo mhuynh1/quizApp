@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {withRouter} from 'react-router-dom';
-import {Route} from 'react-router';
+import { withRouter , Route} from 'react-router-dom';
 import QuizCard from './QuizCard';
+import EditQuizModal from './EditQuizModal';
 import * as quizzesServices from '../../services/quizzes.service';
 const styles = theme => ({
     root: {
@@ -30,6 +30,7 @@ class Mainwell extends React.Component {
     }
 
     componentDidMount() {
+        debugger
         quizzesServices.readAll()
             .then(data => {
                 console.log(data)
@@ -37,13 +38,6 @@ class Mainwell extends React.Component {
             })
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.quizzes !== this.state.quizzes){
-            this.setState({
-                quizzes: nextProps.quizzes
-            })
-        }
-    }
     getAllQuizzes = () => {
         quizzesServices.readAll()
             .then(data => {
@@ -66,10 +60,11 @@ class Mainwell extends React.Component {
     handleEdit = e => {
         this.setState({
             toggleEdit: true,
-            quizId: e.target.id 
-        })  
+            quizId: e.target.id
+        })
     }
     render() {
+        debugger
         const { classes, theme } = this.props;
         const quizzes = this.state.quizzes && this.state.quizzes.map(quiz => {
             return (<QuizCard id={quiz._id} handleDelete={this.handleDelete} handleEdit={this.handleEdit} getAllQuizzes={this.getAllQuizzes} key={quiz._id} cardTitle={quiz.question} choiceA={quiz.answer1} choiceB={quiz.answer2} choiceC={quiz.answer3} choiceD={quiz.answer4} />)
@@ -78,11 +73,12 @@ class Mainwell extends React.Component {
             <React.Fragment>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-        <section style={{ 'display': 'flex', 'flexFlow': 'row wrap'}}>
+                    <section style={{ 'display': 'flex', 'flexFlow': 'row wrap' }}>
                         {quizzes}
                     </section>
                 </main>
-                
+                {/* <Route path="/edit/:id" component={EditQuizModal} /> */}
+                <Route path={`/edit/:id`} render={props => (<EditQuizModal { ...props } />)} />
             </React.Fragment>
         )
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 // material-ui components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -82,8 +82,14 @@ class QuizCard extends React.Component {
     return (
       <div style={{ "position": "relative", "padding": "0 20px" }}>
         <div style={cardIcon}>
-          <EditQuizModal id={this.props.id} getAllQuizzes={this.props.getAllQuizzes} />
-          <i id={this.props.id} className="material-icons" style={{"fontSize": "18px", "marginRight": "10px"}} onClick={e => this.props.handleDelete(e)}>delete_outline</i>
+          {/* <EditQuizModal id={this.props.id} getAllQuizzes={this.props.getAllQuizzes} /> */}
+
+
+          {/* link to route that will render modal:true */}
+          <Link to={`/edit/${this.props.id}`}>
+            <i id={this.props.id} className="material-icons" style={{ "fontSize": "18px", "marginRight": "10px" }}>edit</i>
+          </Link>
+          <i id={this.props.id} className="material-icons" style={{ "fontSize": "18px", "marginRight": "10px" }} onClick={e => this.props.handleDelete(e)}>delete_outline</i>
         </div>
         <Card className={classes.textCenter} style={{ width: "20rem" }}>
           <CardBody>

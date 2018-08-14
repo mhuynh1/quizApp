@@ -12,7 +12,6 @@ var hist = createBrowserHistory();
 ReactDOM.render(
   <Router history={hist}>
     <React.Fragment>
-      {/* <Route exact path="/quizzie" render={props => (<Layout {...props} />)} /> */}
       <Layout/>
       {/* <Switch>
         {indexRoutes.map((prop, key) => {

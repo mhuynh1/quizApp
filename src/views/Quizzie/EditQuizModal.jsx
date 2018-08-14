@@ -49,11 +49,12 @@ class EditQuizModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false,
+            modal: true,
             formData: {}
         };
     }
     componentDidMount() {
+        debugger
         if (this.props.match.params.id) {
             quizzesServices.readById(this.props.match.params.id)
                 .then(data => {
@@ -69,20 +70,26 @@ class EditQuizModal extends React.Component {
         let id = e.target.id
         var x = [];
         x[modal] = true;
-        this.setState(x, () => {
-            quizzesServices.readById(id)
+        this.setState(x);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        debugger
+        if (this.props.match.params.id) {
+            quizzesServices.readById(this.props.match.params.id)
                 .then(data => {
                     this.setState({
+                        modal: true,
                         formData: data
                     })
                 })
-        })
+        }
     }
 
     handleClose(modal) {
         var x = [];
         x[modal] = false;
-        this.setState(x ,() =>{
+        this.setState(x, () => {
             this.props.history.goBack()
         });
     }
@@ -104,12 +111,15 @@ class EditQuizModal extends React.Component {
             .catch(error => console.log(error));
     }
     render() {
+        debugger
         const { classes } = this.props;
         return (
             <div style={{ "display": "inline" }}>
-                <Link to={`/edit/${this.props.id}`} onClick={(e) => this.handleClickOpen("modal", e)}>
+                {/* <Link to={`/edit/${this.props.id}`} onClick={(e) => this.handleClickOpen("modal", e)}>
                     <i id={this.props.id} className="material-icons" style={{ "fontSize": "18px", "marginRight": "10px" }}>edit</i>
-                </Link>
+                </Link> */}
+
+                <i id={this.props.id} className="material-icons" style={{ "fontSize": "18px", "marginRight": "10px" }} onClick={(e) => this.handleClickOpen("modal", e)}>edit</i>
                 <Dialog
                     classes={{
                         root: classes.center,
