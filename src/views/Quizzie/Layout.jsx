@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,11 +13,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-import NewQuizModal from './NewQuizModal';
+import QuizModal from './QuizModal';
 import NewCategoryModal from './NewCategoryModal';
 import Clearfix from '../../components/Clearfix/Clearfix';
 import * as quizzesServices from '../../services/quizzes.service';
 import PageContent from './PageContent';
+import Mainwell from './Mainwell';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -64,11 +65,8 @@ class Layout extends React.Component {
     }
 
     handleDrawerToggle = () => {
-
         this.setState(state => ({ ...state, mobileOpen: !state.mobileOpen }));
     };
-
-    
 
     render() {
         const { classes, theme } = this.props;
@@ -77,7 +75,7 @@ class Layout extends React.Component {
                 <div className={classes.toolbar} />
                 <List component="nav">
                     <ListItem button>
-                        <NewQuizModal/>
+                        <QuizModal modalTitle='Add New Quiz'/>
                     </ListItem>
                 </List>
                 <Divider />
@@ -89,7 +87,7 @@ class Layout extends React.Component {
                         <ListItemText primary="Item 2" />
                     </ListItem>
                     <ListItem button>
-                        <NewCategoryModal />
+                        {/* <NewCategoryModal /> */}
                     </ListItem>
                 </List>
             </div>
@@ -108,7 +106,7 @@ class Layout extends React.Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit" noWrap>
-                            Pick A Quizzie
+                            and knowing is half the battle
             </Typography>
                     </Toolbar>
                 </AppBar>
@@ -139,7 +137,8 @@ class Layout extends React.Component {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <PageContent quizzes={this.state.quizzes} />
+                {/* <PageContent quizzes={this.state.quizzes} /> */}
+                <Route path="/" render={(props) => (<Mainwell {...props} quizzes={this.state.quizzes}/>)} />
                 <Clearfix />
             </div>
         );

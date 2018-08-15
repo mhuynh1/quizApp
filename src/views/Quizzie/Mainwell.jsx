@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { withRouter , Route} from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import QuizCard from './QuizCard';
-import EditQuizModal from './EditQuizModal';
+import QuizModal from './QuizModal';
 import * as quizzesServices from '../../services/quizzes.service';
 const styles = theme => ({
     root: {
@@ -30,12 +30,24 @@ class Mainwell extends React.Component {
     }
 
     componentDidMount() {
-        debugger
         quizzesServices.readAll()
             .then(data => {
                 console.log(data)
                 this.setState({ quizzes: data })
             })
+    }
+
+
+
+    getDerivedStateFromProps(nextProps, nextState) {
+        if (this.props.match.url !== nextProps.match.url) {
+            quizzesServices.readAll()
+                .then(data => {
+                    console.log(data)
+                    this.setState({ quizzes: data })
+                })
+        }
+        return true
     }
 
     getAllQuizzes = () => {
@@ -57,17 +69,10 @@ class Mainwell extends React.Component {
             })
     }
 
-    handleEdit = e => {
-        this.setState({
-            toggleEdit: true,
-            quizId: e.target.id
-        })
-    }
     render() {
-        debugger
         const { classes, theme } = this.props;
         const quizzes = this.state.quizzes && this.state.quizzes.map(quiz => {
-            return (<QuizCard id={quiz._id} handleDelete={this.handleDelete} handleEdit={this.handleEdit} getAllQuizzes={this.getAllQuizzes} key={quiz._id} cardTitle={quiz.question} choiceA={quiz.answer1} choiceB={quiz.answer2} choiceC={quiz.answer3} choiceD={quiz.answer4} />)
+            return (<QuizCard id={quiz._id} getAllQuizzes={this.getAllQuizzes} handleDelete={this.handleDelete} key={quiz._id} cardTitle={quiz.question} choiceA={quiz.answer1} choiceB={quiz.answer2} choiceC={quiz.answer3} choiceD={quiz.answer4} />)
         })
         return (
             <React.Fragment>
@@ -77,8 +82,7 @@ class Mainwell extends React.Component {
                         {quizzes}
                     </section>
                 </main>
-                {/* <Route path="/edit/:id" component={EditQuizModal} /> */}
-                <Route path={`/edit/:id`} render={props => (<EditQuizModal { ...props } />)} />
+                <Route path={`/edit/:id`} render={props => (<QuizModal {...props} fetchAfterNeworEdit={this.fetchAfterNeworEdit} />)} />
             </React.Fragment>
         )
     }
