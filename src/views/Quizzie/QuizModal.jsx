@@ -72,12 +72,12 @@ class QuizModal extends React.Component {
         this.setState(x);
     };
 
-    handleClose(modal) {
+    handleClose = async modal => {
         var x = [];
         x[modal] = false;
-        this.setState(x, () => {
-            this.props.history.push('/')
-        });
+        await this.setState(x);
+        this.props.history.push('/');
+        this.props.fetchAfterNeworEdit();
     };
 
     handleChange = name => event => {
@@ -87,16 +87,16 @@ class QuizModal extends React.Component {
         }))
     };
 
-    handleSave = () => {
+    handleSave = async () => {
         if (this.props.match.params.id) {
             const data = { ...this.state.formData }
             delete data._id
-            quizzesServices.update(this.state.formData._id, data)
+            await quizzesServices.update(this.state.formData._id, data)
         } else {
-            quizzesServices.create(this.state.formData)
+            await quizzesServices.create(this.state.formData)
         }
 
-        this.handleClose("modal")
+        this.handleClose("modal");
     };
 
     render() {

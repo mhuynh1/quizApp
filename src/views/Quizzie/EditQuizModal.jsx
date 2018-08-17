@@ -54,7 +54,6 @@ class EditQuizModal extends React.Component {
         };
     }
     componentDidMount() {
-        debugger
         if (this.props.match.params.id) {
             quizzesServices.readById(this.props.match.params.id)
                 .then(data => {
@@ -74,7 +73,6 @@ class EditQuizModal extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        debugger
         if (this.props.match.params.id) {
             quizzesServices.readById(this.props.match.params.id)
                 .then(data => {
@@ -111,7 +109,6 @@ class EditQuizModal extends React.Component {
             .catch(error => console.log(error));
     }
     render() {
-        debugger
         const { classes } = this.props;
         return (
             <div style={{ "display": "inline" }}>

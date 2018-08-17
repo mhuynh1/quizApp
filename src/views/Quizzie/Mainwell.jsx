@@ -38,17 +38,24 @@ class Mainwell extends React.Component {
     }
 
 
-
-    getDerivedStateFromProps(nextProps, nextState) {
-        if (this.props.match.url !== nextProps.match.url) {
-            quizzesServices.readAll()
-                .then(data => {
-                    console.log(data)
-                    this.setState({ quizzes: data })
-                })
-        }
-        return true
+    fetchAfterNeworEdit = () => {
+        quizzesServices.readAll()
+            .then(data => {
+                console.log(data)
+                this.setState({ quizzes: data })
+            })
     }
+
+    // static getDerivedStateFromProps(props, state) {
+    //     // compare state and props
+    //     debugger
+    //     if (props.match.url !== state) {
+    //         quizzesServices.readAll()
+    //             .then(data => data)
+
+    //     }
+    //     return true
+    // }
 
     getAllQuizzes = () => {
         quizzesServices.readAll()
