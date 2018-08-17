@@ -45,39 +45,32 @@ const editIcon = {
 }
 
 class QuizModal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            modal: false,
+        state = {
+            modal: true,
             formData: {}
-        };
-    };
+        }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.props.match.params.id) {
-            quizzesServices.readById(this.props.match.params.id)
-                .then(data => {
-                    this.setState({
-                        modal: true,
-                        formData: data
-                    })
-                })
+            this.setState({
+                modal: true,
+                isEdit: true,
+                formData: await quizzesServices.readById(this.props.match.params.id)
+            })
         }
     };
 
-    handleClickOpen = (modal, e) => {
-        let id = e.target.id
+    handleClickOpen = modal => {
         var x = [];
         x[modal] = true;
-        this.setState(x);
+        this.setState(x)
     };
 
-    handleClose = async modal => {
+    handleClose = modal => {
         var x = [];
         x[modal] = false;
-        await this.setState(x);
+        this.setState(x);
         this.props.history.push('/');
-        this.props.fetchAfterNeworEdit();
     };
 
     handleChange = name => event => {
@@ -95,7 +88,6 @@ class QuizModal extends React.Component {
         } else {
             await quizzesServices.create(this.state.formData)
         }
-
         this.handleClose("modal");
     };
 
@@ -103,13 +95,6 @@ class QuizModal extends React.Component {
         const { classes } = this.props;
         return (
             <div style={{ "display": "inline" }}>
-                <Button
-                    color="info"
-                    round
-                    onClick={(e) => this.handleClickOpen("modal", e)}>
-                    New Quiz
-                </Button>
-
                 <Dialog
                     classes={{
                         root: classes.center,
@@ -133,7 +118,7 @@ class QuizModal extends React.Component {
                             onClick={() => this.handleClose("modal")}>
                             <Close className={classes.modalClose} />
                         </IconButton>
-                        <h4 className={classes.modalTitle}>{this.props.modalTitle || 'Edit Quiz Details'}</h4>
+                        <h4 className={classes.modalTitle}>{this.state.isEdit ? 'Edit Quiz Details' : 'Create New Quiz'}</h4>
                     </DialogTitle>
                     <DialogContent
                         id="modal-slide-description"
@@ -143,8 +128,7 @@ class QuizModal extends React.Component {
                     <DialogActions
                         className={classes.modalFooter + " " + classes.modalFooterCenter}>
                         <Button
-                            onClick={() => this.handleSave()}
-                            color="successNoBackground">
+                            onClick={() => this.handleSave()}>
                             Save
                         </Button>
                     </DialogActions>

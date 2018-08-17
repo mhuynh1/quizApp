@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
@@ -122,7 +121,7 @@ class QuizModalForm extends React.Component {
                         shrink: true
                       }} 
                 />
-                <TextField
+                {/* <TextField
                     id="select-category"
                     select
                     label="Select"
@@ -143,7 +142,7 @@ class QuizModalForm extends React.Component {
                             {option.label}
                         </MenuItem>
                     ))}
-                </TextField>
+                </TextField> */}
 
             </form>
         );

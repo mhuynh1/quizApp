@@ -29,70 +29,50 @@ class Mainwell extends React.Component {
         quizzes: []
     }
 
-    componentDidMount() {
-        quizzesServices.readAll()
-            .then(data => {
-                console.log(data)
-                this.setState({ quizzes: data })
-            })
+    async componentDidMount() {
+        this.setState({
+            quizzes: await quizzesServices.readAll(),
+            currentUrl: this.props.match.url
+        })
     }
 
-
-    fetchAfterNeworEdit = () => {
-        quizzesServices.readAll()
-            .then(data => {
-                console.log(data)
-                this.setState({ quizzes: data })
-            })
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.location.pathname !== prevState.currentUrl) {
+            return { currentUrl: nextProps.location.pathname }
+        }
+        else return null
     }
 
-    // static getDerivedStateFromProps(props, state) {
-    //     // compare state and props
-    //     debugger
-    //     if (props.match.url !== state) {
-    //         quizzesServices.readAll()
-    //             .then(data => data)
-
-    //     }
-    //     return true
-    // }
-
-    getAllQuizzes = () => {
-        quizzesServices.readAll()
-            .then(data => {
-                setTimeout(() => {
-                    this.setState({ quizzes: data })
-                }, 700)
-            })
+    async componentDidUpdate(prevProps, prevState) {
+        if (this.state.currentUrl !== prevState.currentUrl) {
+            this.setState({ quizzes: await quizzesServices.readAll() })
+        }
     }
 
-    handleDelete = e => {
-        quizzesServices._delete(e.target.id)
-            .then(() => {
-                return quizzesServices.readAll()
-            })
-            .then(data => {
-                this.setState({ quizzes: data })
-            })
+    handleDelete = async e => {
+        await quizzesServices._delete(e.target.id)
+        this.setState({ quizzes: await quizzesServices.readAll() })
     }
 
     render() {
         const { classes, theme } = this.props;
         const quizzes = this.state.quizzes && this.state.quizzes.map(quiz => {
-            return (<QuizCard id={quiz._id} getAllQuizzes={this.getAllQuizzes} handleDelete={this.handleDelete} key={quiz._id} cardTitle={quiz.question} choiceA={quiz.answer1} choiceB={quiz.answer2} choiceC={quiz.answer3} choiceD={quiz.answer4} />)
+            return (<QuizCard id={quiz._id} getAllQuizzes={this.getAllQuizzes} handleDelete={this.handleDelete} key={quiz._id} cardTitle={quiz.question} choiceA={quiz.answer1} choiceB={quiz.answer2} choiceC={quiz.answer3} choiceD={quiz.answer4} correctAnswer={quiz.correctAnswer} />)
         })
         return (
             <React.Fragment>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <section style={{ 'display': 'flex', 'flexFlow': 'row wrap' }}>
+                    <section style={{ 'display': 'flex', 'flexFlow': 'row wrap', 'justifyContent': 'center' }}>
                         {quizzes}
                     </section>
                 </main>
                 <Route path={`/edit/:id`} render={props => (<QuizModal {...props} fetchAfterNeworEdit={this.fetchAfterNeworEdit} />)} />
+                <Route path={`/new-quiz`} render={props => (<QuizModal {...props} fetchAfterNeworEdit={this.fetchAfterNeworEdit} />)} />
             </React.Fragment>
         )
     }
+
 }
 
 Mainwell.propTypes = {

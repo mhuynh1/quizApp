@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,11 +13,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-import QuizModal from './QuizModal';
-import NewCategoryModal from './NewCategoryModal';
+import Button from "components/CustomButtons/Button.jsx";
 import Clearfix from '../../components/Clearfix/Clearfix';
-import * as quizzesServices from '../../services/quizzes.service';
-import PageContent from './PageContent';
 import Mainwell from './Mainwell';
 const drawerWidth = 240;
 
@@ -66,16 +63,21 @@ class Layout extends React.Component {
 
     handleDrawerToggle = () => {
         this.setState(state => ({ ...state, mobileOpen: !state.mobileOpen }));
-    };
+    }
 
     render() {
         const { classes, theme } = this.props;
         const drawer = (
             <div>
-                <div className={classes.toolbar} />
+                <div className={classes.toolbar}/>
                 <List component="nav">
                     <ListItem button>
-                        <QuizModal modalTitle='Add New Quiz'/>
+                        <Link to={`/new-quiz`}>
+                            <Button color="info" round>
+                                New Quiz
+                            </Button>
+                        </Link>
+
                     </ListItem>
                 </List>
                 <Divider />
@@ -118,7 +120,7 @@ class Layout extends React.Component {
                         onClose={this.handleDrawerToggle}
                         classes={{
                             paper: classes.drawerPaper,
-                        }}
+                        } + ' quizSidebar'}
                         ModalProps={{
                             keepMounted: true, // Better open performance on mobile.
                         }}
@@ -137,8 +139,7 @@ class Layout extends React.Component {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                {/* <PageContent quizzes={this.state.quizzes} /> */}
-                <Route path="/" render={(props) => (<Mainwell {...props} quizzes={this.state.quizzes}/>)} />
+                <Route path="/" render={props => (<Mainwell {...props} />)} />
                 <Clearfix />
             </div>
         );
